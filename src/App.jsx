@@ -1,3 +1,4 @@
+// src/App.js
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addTodo, completeTodo, deleteTodo, selectTodos } from './features/todoSlice';
@@ -28,11 +29,9 @@ const App = () => {
     const newSelectedTodos = [...selectedTodos];
 
     if (newSelectedTodos.includes(index)) {
-      // If the todo is already selected, remove it from the list
       const indexToRemove = newSelectedTodos.indexOf(index);
       newSelectedTodos.splice(indexToRemove, 1);
     } else {
-      // If the todo is not selected, add it to the list
       newSelectedTodos.push(index);
     }
 
@@ -41,17 +40,21 @@ const App = () => {
 
   const handleDeleteSelected = () => {
     const sortedSelectedTodos = selectedTodos.slice().sort((a, b) => b - a);
-  sortedSelectedTodos.forEach((index) => {
-    dispatch(deleteTodo(index));
-  });
+    sortedSelectedTodos.forEach((index) => {
+      dispatch(deleteTodo(index));
+    });
 
-  // Clear selected todos
-  setSelectedTodos([]);
+    setSelectedTodos([]);
   };
+
+  const completedCount = todos.filter((todo) => todo.completed).length;
 
   return (
     <div className="container mt-5">
-      <h1 className="display-4 mb-4">To Do App</h1>
+      <div className="header" >
+        <h1 className="display-4 mb-4">ToDo App</h1>
+        <p>Completed Items: {completedCount}</p>
+      </div>
       <div className="input-group mb-3">
         <input
           type="text"
@@ -67,14 +70,23 @@ const App = () => {
 
       <ul className="list-group">
         {todos.map((todo, index) => (
-          <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
+          <li
+            key={index}
+            className={`list-group-item d-flex justify-content-between align-items-center ${
+              selectedTodos.includes(index) ? 'bg-light' : ''
+            }`}
+          >
             <div>
               <input
                 type="checkbox"
                 checked={selectedTodos.includes(index)}
                 onChange={() => handleCheckboxChange(index)}
               />
-              <span className={todo.completed ? 'ms-2 text-decoration-line-through' : 'ms-2'}>{todo.text}</span>
+              <span
+                className={todo.completed ? 'ms-2 text-decoration-line-through' : 'ms-2'}
+              >
+                {todo.text}
+              </span>
             </div>
             <div>
               <button className="btn btn-success me-2" onClick={() => handleCompleteTodo(index)}>
