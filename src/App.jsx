@@ -52,7 +52,7 @@ const App = () => {
   return (
     <div className="container mt-5">
       <div className="header" >
-        <h1 className="display-4 mb-4">ToDo App</h1>
+        <h1 className="display-4 mb-4">To Do App</h1>
         <p>Completed Items: {completedCount}</p>
       </div>
       <div className="input-group mb-3">
